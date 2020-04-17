@@ -1,0 +1,29 @@
+.logo {
+  width: 25%;
+}
+
+.nav-link a {
+  display: block;
+  text-align: center;
+  width: 80px;
+  color: black;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.top-btn {
+  background-color: rgb(255, 44, 109);
+  border-radius: 10px;
+  padding-bottom: 10px;
+  color: white;
+  width: 80px;
+  border: none;
+  height: 30px;
+  font-weight: 600;
+}
+
+.cart-icon {
+  width: 30px;
+  height: 30px;
+}

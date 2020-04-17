@@ -1,0 +1,21 @@
+.banner {
+  background-image: url("../../images/bannerbackground.png");
+  background-position: center;
+  background-size: cover;
+  height: 350px;
+}
+.banner p {
+  font-weight: bolder;
+  text-align: center;
+}
+
+.banner input {
+  width: 250px;
+  margin-right: 5px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  background-color: white;
+  box-shadow: 0 0 10px 2px lightgray;
+  padding-left: 15px;
+}
