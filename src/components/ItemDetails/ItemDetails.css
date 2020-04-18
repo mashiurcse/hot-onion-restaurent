@@ -1,0 +1,47 @@
+.item-count {
+  margin-left: 30px;
+  height: 40px;
+  width: 100px;
+  padding: 10px;
+  border: 1px solid lightblue;
+  border-radius: 3em;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.minusButton,
+.plusButton {
+  cursor: pointer;
+  border: none;
+  background-color: inherit;
+  font-weight: 700;
+}
+
+.minusButton {
+  color: gray;
+}
+
+.plusButton {
+  color: rgb(255, 44, 109);
+}
+
+.addButton {
+  margin-top: 1.5rem;
+  width: 100px;
+  padding: 10px;
+  border: none;
+  background-color: rgb(255, 44, 109);
+  border-radius: 3em;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.moreItem img {
+  width: 100px;
+  height: 100px;
+}

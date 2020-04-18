@@ -1,0 +1,16 @@
+.items {
+  text-align: center;
+  border: none;
+}
+
+.items:hover {
+  box-shadow: 0 5px 10px 0px lightgray;
+}
+
+.items a {
+  color: black;
+}
+
+.items a:hover {
+  text-decoration: none;
+}

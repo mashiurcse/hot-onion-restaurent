@@ -1,0 +1,19 @@
+.nav {
+  cursor: pointer;
+}
+
+.active {
+  color: rgb(255, 44, 109);
+  border-bottom: 3px solid rgb(255, 44, 109);
+}
+
+.checkout button {
+  background-color: gray;
+  width: 10rem;
+  height: 2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-weight: 600;
+}
