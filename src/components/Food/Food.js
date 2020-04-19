@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import foodData from "../../foodData";
 import FoodItems from "../FoodItems/FoodItems";
+import { Link } from "react-router-dom";
+import Cart from "../Cart/Cart";
 
 const Food = () => {
   const foods = foodData;
@@ -14,6 +16,8 @@ const Food = () => {
     setFood(foods);
   }, [foods]);
   const currFood = food.filter((food) => food.category === category);
+
+  const [cart, setCart] = useState([]);
 
   return (
     <div className="container">
@@ -42,7 +46,9 @@ const Food = () => {
         ))}
       </div>
       <div className="checkout d-flex justify-content-center my-3">
-        <button>Checkout Order</button>
+        <Link to="/cart">
+          <button>Checkout Order</button>
+        </Link>
       </div>
     </div>
   );

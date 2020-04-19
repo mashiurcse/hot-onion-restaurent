@@ -11,7 +11,7 @@ const ItemDetails = () => {
   const { id } = useParams();
   const foods = foodData;
   const [category, setCategory] = useState([]);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const food = foods.find((product) => id === product.id);
 
   useEffect(() => {
@@ -28,9 +28,9 @@ const ItemDetails = () => {
           <h1>{name}</h1>
           <p>{detailsDescription}</p>
           <div className="row d-flex align-items-center ml-1 mt-4">
-            <h3>${price}</h3>
+            <h3>${price * count}</h3>
             <div className="item-count">
-              {count > 0 ? (
+              {count > 1 ? (
                 <button
                   className="minusButton"
                   onClick={() => setCount(count - 1)}
