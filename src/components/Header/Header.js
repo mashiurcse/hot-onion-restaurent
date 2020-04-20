@@ -17,9 +17,15 @@ const Header = () => {
         <div className="nav-link d-flex align-self-center">
           <ul className="navbar-nav">
             <li className="nav-item ml-3">
-              <a href="/cart">
-                <FontAwesomeIcon className="cart-icon" icon={faShoppingCart} />
-              </a>
+              <span>
+                <a href="/cart">
+                  <FontAwesomeIcon
+                    className="cart-icon"
+                    icon={faShoppingCart}
+                  />
+                  <span className="cart-amount counter-number">1</span>
+                </a>
+              </span>
             </li>
             <li className="nav-item">
               <a href="/login">Login</a>

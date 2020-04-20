@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import foodData from "../../foodData";
 import FoodItems from "../FoodItems/FoodItems";
 import { Link } from "react-router-dom";
-import Cart from "../Cart/Cart";
 
 const Food = () => {
   const foods = foodData;
@@ -16,8 +15,6 @@ const Food = () => {
     setFood(foods);
   }, [foods]);
   const currFood = food.filter((food) => food.category === category);
-
-  const [cart, setCart] = useState([]);
 
   return (
     <div className="container">
