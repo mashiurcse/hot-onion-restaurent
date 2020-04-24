@@ -1,11 +1,22 @@
 import React from "react";
+import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import "./Header.css";
 import logo from "../../images/logo2.png";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { getDatabaseCart } from "../../utilities/databaseManager";
+import { useState } from "react";
 
 const Header = () => {
+  const [cart, setCart] = useState([]);
+  useEffect(() => {
+    //cart data
+    const saveData = getDatabaseCart();
+    const product = Object.keys(saveData);
+
+    setCart(product);
+  }, []);
   return (
     <div className="container">
       <nav className="navbar navbar-expand-md">
@@ -23,7 +34,9 @@ const Header = () => {
                     className="cart-icon"
                     icon={faShoppingCart}
                   />
-                  <span className="cart-amount counter-number">1</span>
+                  <span className="cart-amount counter-number">
+                    {cart.length}
+                  </span>
                 </a>
               </span>
             </li>

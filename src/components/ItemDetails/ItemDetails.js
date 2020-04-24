@@ -6,13 +6,18 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import "./ItemDetails.css";
+import { addToDatabaseCart } from "../../utilities/databaseManager";
 
+//Template literals are enclosed by the backtick (` `)  (grave accent) character instead of double or single quotes.
+// placeholder ${ }
+//ctrl+k+c/u - multiline comment, alt+arrow - for line move
 const ItemDetails = () => {
   const { id } = useParams();
   const foods = foodData;
   const [category, setCategory] = useState([]);
   const [count, setCount] = useState(1);
   const food = foods.find((product) => id === product.id);
+  //const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const foodCategory = food.category;
@@ -21,6 +26,15 @@ const ItemDetails = () => {
   }, [food.category, foods]);
 
   const { name, detailsDescription, img, price } = food;
+
+  const handleAddProduct = (product) => {
+    const toBeAdded = product.id;
+    const productAdded = foods.find((pd) => pd.id === toBeAdded);
+    const count = document.getElementById("item-quantity").innerHTML;
+    //setCart(sameProduct);
+    addToDatabaseCart(productAdded.id, count);
+  };
+
   return (
     <div className="container">
       <div className="row mt-4">
@@ -44,7 +58,10 @@ const ItemDetails = () => {
                   -{" "}
                 </button>
               )}
-              {count}
+              <h6 style={{ marginTop: "10px" }} id="item-quantity">
+                {count}
+              </h6>
+
               <button
                 className="plusButton"
                 onClick={() => setCount(count + 1)}
@@ -54,7 +71,7 @@ const ItemDetails = () => {
               </button>
             </div>
           </div>
-          <button className="addButton">
+          <button onClick={() => handleAddProduct(food)} className="addButton">
             <FontAwesomeIcon icon={faShoppingCart} />
             add
           </button>

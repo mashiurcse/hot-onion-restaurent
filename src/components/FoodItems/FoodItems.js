@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const FoodItems = (props) => {
-  console.log(props);
-
   const { name, img, description, price, id } = props.food;
   return (
     <div className="card col-md-12 col-lg-4 items align-items-center justify-content-around mt-3">

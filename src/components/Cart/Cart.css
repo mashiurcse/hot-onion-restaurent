@@ -1,0 +1,19 @@
+img {
+  margin-right: 10px;
+}
+.cart-container {
+  margin-top: 20px;
+  display: flex;
+}
+
+.card {
+  padding: 20px;
+}
+.order-delivery {
+  width: 60%;
+  margin-right: 10px;
+}
+.pd-name {
+  font-size: 70%;
+  font-weight: 700;
+}
