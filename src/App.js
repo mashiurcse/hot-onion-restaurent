@@ -6,6 +6,7 @@ import Cart from "./components/Cart/Cart";
 import Food from "./components/Food/Food";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ItemDetails from "./components/ItemDetails/ItemDetails";
+import OrderPlace from "./components/OrderPlace/OrderPlace";
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
           </Route>
           <Route path="/cart">
             <Cart />
+          </Route>
+          <Route path="/orderPlaced">
+            <OrderPlace></OrderPlace>
           </Route>
           <Route path="/product/:id">
             <ItemDetails></ItemDetails>

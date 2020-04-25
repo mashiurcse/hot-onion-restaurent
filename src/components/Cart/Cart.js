@@ -3,6 +3,7 @@ import { getDatabaseCart } from "../../utilities/databaseManager";
 import foodData from "../../foodData";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Cart.css";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -25,7 +26,13 @@ const Cart = () => {
     setCart(cartProducts);
   }, []);
 
-  const total = cart.reduce((total, pd) => total + pd.price * pd.quantity, 0);
+  const subTotal = cart.reduce(
+    (total, pd) => total + pd.price * pd.quantity,
+    0
+  );
+  const tax = Math.round(subTotal * 0.12, 2);
+  const delivery = 2;
+  const total = subTotal + tax + delivery;
   //const items = cart.map((pd) => pd.name);
   //const price = cart.map((pd) => pd.price);
   //   console.log(price);
@@ -62,16 +69,37 @@ const Cart = () => {
                 className="form-control"
               ></input>
             </form>
+            <div className="checkout d-flex justify-content-center my-3">
+              <Link to="/cart">
+                <button
+                  style={{
+                    backgroundColor: "Tomato",
+                  }}
+                >
+                  Save and Continue
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="card">
+        <div
+          style={{
+            width: "500px",
+
+            marginLeft: "50px",
+            borderLeft: "50px",
+          }}
+          className="card"
+        >
           <h1>Order Review</h1>
-          <h3>Total Items: {cart.length}</h3>
-          <h2>Total Price: ${total}</h2>
+
           <div className="container">
             {cart.map((pd) => (
               <div className="cart-container" key={pd.id}>
-                <div>
+                <div
+                  style={{ marginTop: "20px" }}
+                  className="d-flex align-items-center"
+                >
                   <img src={pd.img} alt={pd.name} width="50px" />
                 </div>
                 <div>
@@ -83,7 +111,7 @@ const Cart = () => {
                       </div>
                     </div>
 
-                    <div className="item-count">
+                    <div style={{ marginLeft: "10px" }} className="item-count">
                       {pd.quantity > 1 ? (
                         <button
                           className="minusButton"
@@ -118,6 +146,15 @@ const Cart = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <h6>Total Items: {cart.length}</h6>
+          <h6>Tax: ${tax}</h6>
+          <h6>Delivery Fee: ${delivery} </h6>
+          <h5>Total Price: ${total}</h5>
+          <div className="checkout d-flex justify-content-center my-3">
+            <Link to="/orderPlaced">
+              <button>Place Order</button>
+            </Link>
           </div>
         </div>
       </div>
