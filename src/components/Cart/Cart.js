@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getDatabaseCart } from "../../utilities/databaseManager";
+import {
+  getDatabaseCart,
+  addToDatabaseCart,
+} from "../../utilities/databaseManager";
 import foodData from "../../foodData";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Cart.css";
@@ -7,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
-  const [count, setCount] = useState();
+  //const [count, setCount] = useState([]);
   // const { items, price } = cart;
   useEffect(() => {
     const savedCart = getDatabaseCart(); //get ocject
@@ -24,6 +27,7 @@ const Cart = () => {
     });
 
     setCart(cartProducts);
+    console.log(cartProducts);
   }, []);
 
   const subTotal = cart.reduce(
@@ -36,6 +40,9 @@ const Cart = () => {
   //const items = cart.map((pd) => pd.name);
   //const price = cart.map((pd) => pd.price);
   //   console.log(price);
+  function refreshPage() {
+    window.location.reload(false);
+  }
   return (
     <div className="container">
       <div style={{ display: "flex" }}>
@@ -105,7 +112,9 @@ const Cart = () => {
                 <div>
                   <div className="row d-flex align-items-center ml-1 mt-4">
                     <div>
-                      <div className="pd-name">{pd.name}</div>
+                      <div style={{ width: "150px" }} className="pd-name">
+                        {pd.name}
+                      </div>
                       <div>
                         <h3>${pd.price * pd.quantity}</h3>
                       </div>
@@ -115,7 +124,10 @@ const Cart = () => {
                       {pd.quantity > 1 ? (
                         <button
                           className="minusButton"
-                          onClick={() => setCount(pd.quantity - 1)}
+                          onClick={() =>
+                            addToDatabaseCart(pd.id, pd.quantity - 1)
+                          }
+                          onClickCapture={refreshPage}
                         >
                           {" "}
                           -{" "}
@@ -132,12 +144,22 @@ const Cart = () => {
                       </h6>
 
                       <button
-                        className="plusButton"
-                        onClick={() => setCount(pd.quantity + 1)}
+                        className="minusButton"
+                        onClick={() =>
+                          addToDatabaseCart(pd.id, parseInt(pd.quantity) + 1)
+                        }
+                        onClickCapture={refreshPage}
                       >
                         {" "}
                         +{" "}
                       </button>
+                      {/* <button
+                        className="plusButton"
+                        onClick={() => setCount(count + 1)}
+                      >
+                        {" "}
+                        +{" "}
+                      </button> */}
                     </div>
                   </div>
                   {/* {"Name:"} {pd.name} {<br></br>}

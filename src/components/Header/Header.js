@@ -10,6 +10,7 @@ import { useState } from "react";
 
 const Header = () => {
   const [cart, setCart] = useState([]);
+
   useEffect(() => {
     //cart data
     const saveData = getDatabaseCart();
@@ -17,6 +18,7 @@ const Header = () => {
 
     setCart(product);
   }, []);
+
   return (
     <div className="container">
       <nav className="navbar navbar-expand-md">

@@ -31,10 +31,13 @@ const ItemDetails = () => {
     const toBeAdded = product.id;
     const productAdded = foods.find((pd) => pd.id === toBeAdded);
     const count = document.getElementById("item-quantity").innerHTML;
+
     //setCart(sameProduct);
     addToDatabaseCart(productAdded.id, count);
   };
-
+  function refreshPage() {
+    window.location.reload(false);
+  }
   return (
     <div className="container">
       <div className="row mt-4">
@@ -71,7 +74,11 @@ const ItemDetails = () => {
               </button>
             </div>
           </div>
-          <button onClick={() => handleAddProduct(food)} className="addButton">
+          <button
+            onClick={() => handleAddProduct(food)}
+            onClickCapture={refreshPage}
+            className="addButton"
+          >
             <FontAwesomeIcon icon={faShoppingCart} />
             add
           </button>
