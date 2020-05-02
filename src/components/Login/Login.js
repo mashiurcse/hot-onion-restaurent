@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Auth from "./UseAuth";
+//firebase
+import * as firebase from "firebase/app";
+import "firebase/auth";
+//import firebaseConfig from "../../firebase.config";
+
+//firebase.initializeApp(firebaseConfig);
+//firebase
 
 const Login = () => {
   //Login with user and password
@@ -13,32 +20,27 @@ const Login = () => {
     retypePassword: "",
     isValid: false,
     isValidPassword: false,
-    isValidRePassword: false,
   });
 
   //Login with Google
   const auth = Auth();
-  console.log(auth);
+  // console.log(auth);
 
-  //Login with Email and password
-  const CreateAccountA = (e) => {
-    console.log(auth.signInWithEmailPassword);
-  };
   //console.log(user);
   const ValidateEmail = (email) =>
     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
 
   const hasNumber = (input) =>
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/.test(input);
-  let isValid = true;
-  let isValidPassword = true;
-  let isValidRePassword = true;
+
+  //let isValidRePassword = true;
   const inputChange = (e) => {
+    let isValid = true;
+    let isValidPassword = true;
     const newUserInfo = { ...user };
     //perform validation
 
     if (e.target.name === "email") {
-      // return true;
       isValid = ValidateEmail(e.target.value);
       if (isValid === false) {
         alert("Invalid Email!");
@@ -46,35 +48,54 @@ const Login = () => {
     }
 
     if (e.target.name === "password") {
-      isValidPassword = e.target.value.length > 8 && hasNumber(e.target.value);
-    }
-
-    if (e.target.name === "retypePassword") {
-      isValidRePassword =
-        e.target.value.length > 8 && hasNumber(e.target.value);
+      isValidPassword = e.target.value.length >= 8 && hasNumber(e.target.value);
+      if (isValidPassword === false) {
+        alert("Invalid Password!");
+      }
     }
 
     newUserInfo[e.target.name] = e.target.value;
     newUserInfo.isValid = isValid;
     newUserInfo.isValidPassword = isValidPassword;
-    newUserInfo.isValidRePassword = isValidRePassword;
     setUser(newUserInfo);
+    //console.log(newUserInfo);
+  };
+  const createAccount = (e) => {
     if (user.password !== user.retypePassword) {
       alert("password does not match!");
       window.history.go(0);
     }
-    //console.log(newUserInfo);
-  };
-  const createAccount = (e) => {
-    if (user.isValid && user.isValidPassword && user.isValidRePassword) {
+
+    if (user.isValid && user.isValidPassword) {
       console.log(user.username, user.email);
     } else {
       alert("Not valid email or Password");
-      //console.log("Not Valid");
     }
+
+    //firebase
+    if (user.isValid) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(user.email, user.password)
+        .then((res) => {
+          console.log(res);
+          const createdUser = { ...user };
+          createdUser.isSignedIn = true;
+          setUser(createdUser);
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          // const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+          return errorMessage;
+        });
+    }
+
     e.preventDefault();
     e.target.reset();
   };
+
   return (
     <div className="container">
       <div>
@@ -87,30 +108,14 @@ const Login = () => {
           <button onClick={auth.signInWithGoogle}>Sign in With Google</button>
         )}{" "}
       </div>
-      <div>
-        <form onSubmit={CreateAccountA}>
-          <input
-            type="text"
-            name="emaila"
-            id="emaila"
-            placeholder="Enter Email"
-            required
-          />
-          <input
-            type="password"
-            name="passworda"
-            placeholder="Enter Password"
-            required
-          />
-          <br />
-          <input
-            type="submit"
-            className="signupbtn"
-            value="Create Account"
-            style={{ backgroundColor: "tomato" }}
-          />
-        </form>
-      </div>
+
+      {user.isSignedIn && (
+        <div>
+          <p>Welcome, {user.username} </p>
+          <p>Email: {user.email} </p>
+        </div>
+      )}
+
       <h1>Sign Up</h1>
       <form onSubmit={createAccount}>
         <input
@@ -143,13 +148,12 @@ const Login = () => {
           required
         />
         <div className="checkout">
-          <input type="submit" value="Cancel" className="cancelbtn" />
+          <input type="submit" value="Cancel" />
 
           <input
             type="submit"
-            className="signupbtn"
             value="Sign Up"
-            style={{ backgroundColor: "tomato" }}
+            style={{ backgroundColor: "tomato", marginLeft: "20px" }}
           />
         </div>
       </form>

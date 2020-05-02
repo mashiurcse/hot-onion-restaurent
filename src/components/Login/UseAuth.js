@@ -11,7 +11,7 @@ const Auth = () => {
   const signInWithEmailPassword = () => {
     const email = "mashiur@y.com";
     const password = "1234";
-    const acc = { email, password };
+
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -22,7 +22,6 @@ const Auth = () => {
         // ...
         return errorMessage;
       });
-    return acc;
   };
 
   const signInWithGoogle = () => {
