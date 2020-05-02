@@ -31,7 +31,7 @@ const Header = () => {
           <ul className="navbar-nav">
             <li className="nav-item ml-3">
               <span>
-                <a href="/cart">
+                <a href="/login">
                   <FontAwesomeIcon
                     className="cart-icon"
                     icon={faShoppingCart}
@@ -45,7 +45,9 @@ const Header = () => {
             <li className="nav-item">
               <a href="/login">Login</a>
             </li>
-            <button className="top-btn">Sign Up</button>
+            <a href="/login">
+              <button className="top-btn">Sign Up</button>
+            </a>
           </ul>
         </div>
       </nav>

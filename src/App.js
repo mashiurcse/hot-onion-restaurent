@@ -7,6 +7,7 @@ import Food from "./components/Food/Food";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ItemDetails from "./components/ItemDetails/ItemDetails";
 import OrderPlace from "./components/OrderPlace/OrderPlace";
+import Login from "./components/Login/Login";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
           </Route>
           <Route path="/cart">
             <Cart />
+          </Route>
+          <Route exact path="/login">
+            <Login></Login>
           </Route>
           <Route path="/orderPlaced">
             <OrderPlace></OrderPlace>

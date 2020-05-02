@@ -6,8 +6,19 @@ import { useEffect } from "react";
 import foodData from "../../foodData";
 import FoodItems from "../FoodItems/FoodItems";
 import { Link } from "react-router-dom";
+import { getDatabaseCart } from "../../utilities/databaseManager";
 
 const Food = () => {
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    //cart data
+    const saveData = getDatabaseCart();
+    const product = Object.keys(saveData);
+
+    setCart(product);
+  }, []);
+  console.log(cart.length);
   const foods = foodData;
   const [food, setFood] = useState([]);
   const [category, setCategory] = useState("lunch");
@@ -43,9 +54,15 @@ const Food = () => {
         ))}
       </div>
       <div className="checkout d-flex justify-content-center my-3">
-        <Link to="/cart">
+        {cart.length > 0 ? (
+          <Link to="/login">
+            <button style={{ backgroundColor: "tomato" }}>
+              Checkout Order
+            </button>
+          </Link>
+        ) : (
           <button>Checkout Order</button>
-        </Link>
+        )}
       </div>
     </div>
   );
