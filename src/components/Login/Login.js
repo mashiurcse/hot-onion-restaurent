@@ -14,10 +14,11 @@ const Login = () => {
   //Login with user and password
   const [user, setUser] = useState({
     isSignedIn: false,
-    username: "",
+    displayName: "",
     email: "",
     password: "",
     retypePassword: "",
+    error: "",
     isValid: false,
     isValidPassword: false,
   });
@@ -67,7 +68,7 @@ const Login = () => {
     }
 
     if (user.isValid && user.isValidPassword) {
-      console.log(user.username, user.email);
+      // console.log(user.displayName, user.email);
     } else {
       alert("Not valid email or Password");
     }
@@ -81,19 +82,28 @@ const Login = () => {
           console.log(res);
           const createdUser = { ...user };
           createdUser.isSignedIn = true;
+          createdUser.error = "";
           setUser(createdUser);
         })
         .catch((error) => {
-          // Handle Errors here.
-          // const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorMessage);
-          return errorMessage;
+          const createdUser = { ...user };
+          createdUser.isSignedIn = false;
+          createdUser.error = error.message;
+          setUser(createdUser);
         });
     }
 
     e.preventDefault();
     e.target.reset();
+  };
+
+  const signInUser = (e) => {
+    e.preventDefault();
+    e.target.reset();
+  };
+
+  const switchForm = (e) => {
+    // e.target.value;
   };
 
   return (
@@ -111,17 +121,25 @@ const Login = () => {
 
       {user.isSignedIn && (
         <div>
-          <p>Welcome, {user.username} </p>
+          <p>Welcome, {user.displayName} </p>
           <p>Email: {user.email} </p>
         </div>
       )}
-
+      {user.error && <p style={{ color: "red" }}>{user.error} </p>}
+      <br />
+      <input
+        type="submit"
+        value="Already an Existing User"
+        onClick={switchForm}
+        style={{ backgroundColor: "tomato", marginLeft: "20px" }}
+      />
+      <br />
       <h1>Sign Up</h1>
       <form onSubmit={createAccount}>
         <input
           type="text"
           onBlur={inputChange}
-          name="username"
+          name="displayName"
           placeholder="Enter Name"
           required
         />
@@ -156,6 +174,29 @@ const Login = () => {
             style={{ backgroundColor: "tomato", marginLeft: "20px" }}
           />
         </div>
+      </form>
+      <form onSubmit={signInUser}>
+        <input
+          type="text"
+          onBlur={inputChange}
+          name="email"
+          id="email"
+          placeholder="Enter Email"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          onBlur={inputChange}
+          placeholder="Enter Password"
+          required
+        />
+        <br />
+        <input
+          type="submit"
+          value="Sign In"
+          style={{ backgroundColor: "tomato", marginLeft: "20px" }}
+        />
       </form>
     </div>
   );
