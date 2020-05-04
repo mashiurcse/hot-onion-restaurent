@@ -4,11 +4,9 @@ import delivery from "../../images/Group 1151.png";
 import rider from "../../images/Group 1152.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./OrderPlace.css";
+import { Link } from "react-router-dom";
 
 const OrderPlace = () => {
-  function refreshPage() {
-    window.location.reload(false);
-  }
   return (
     <div className="container">
       <div style={{ display: "flex" }}>
@@ -69,18 +67,18 @@ const OrderPlace = () => {
                 </div>
                 <div>Your Rider</div>
               </div>
-              <div></div>
             </div>
             <div className=" d-flex justify-content-center my-3">
-              <button
-                onClick={refreshPage}
-                style={{
-                  width: "200px",
-                  backgroundColor: "tomato",
-                }}
-              >
-                Contact
-              </button>
+              <Link to="/">
+                <button
+                  style={{
+                    width: "200px",
+                    backgroundColor: "tomato",
+                  }}
+                >
+                  Contact
+                </button>
+              </Link>
             </div>
           </div>
         </div>

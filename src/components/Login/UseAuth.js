@@ -8,22 +8,6 @@ firebase.initializeApp(firebaseConfig);
 const Auth = () => {
   const [user, setUser] = useState(null);
 
-  const signInWithEmailPassword = () => {
-    const email = "mashiur@y.com";
-    const password = "1234";
-
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .catch((error) => {
-        // Handle Errors here.
-        // const errorCode = error.code;
-        const errorMessage = error.message;
-        // ...
-        return errorMessage;
-      });
-  };
-
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -33,6 +17,7 @@ const Auth = () => {
       .then((res) => {
         const { displayName, email, photoURL } = res.user;
         const signedInUser = {
+          isSignInWithGoogle: true,
           isSignedIn: true,
           name: displayName,
           email,
@@ -65,7 +50,6 @@ const Auth = () => {
     user,
     signInWithGoogle,
     signOut,
-    signInWithEmailPassword,
   };
 };
 

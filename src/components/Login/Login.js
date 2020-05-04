@@ -24,6 +24,7 @@ const Login = () => {
     error: "",
     isValid: false,
     isValidPassword: false,
+    isSignInWithGoogle: false,
   });
 
   //Login with Google
@@ -106,10 +107,11 @@ const Login = () => {
           console.log(res);
           const createdUser = { ...user };
           createdUser.isSignedIn = true;
-          createdUser.isMember = true;
+          createdUser.isMember = false;
           createdUser.error = "";
           setUser(createdUser);
         })
+
         .catch((error) => {
           const createdUser = { ...user };
           createdUser.isSignedIn = false;
@@ -145,14 +147,14 @@ const Login = () => {
 
   const switchForm = (e) => {
     const isExistingUser = { ...user };
-    isExistingUser.isMember = true;
+    isExistingUser.isMember = false;
     setUser(isExistingUser);
     console.log(isExistingUser);
   };
 
   const switchFormForSignUp = (e) => {
     const isExistingUser = { ...user };
-    isExistingUser.isMember = false;
+    isExistingUser.isMember = true;
     setUser(isExistingUser);
     console.log(isExistingUser);
   };
@@ -179,13 +181,28 @@ const Login = () => {
 
   return (
     <div className="container">
-      {user.isMember === false && (
+      {user.isMember === false && user.isSignIn === false && (
         <div>
           <div>
             {auth.user ? (
               <div>
-                <h1>{auth.user.name}</h1>
-                <button onClick={signOut}>Sign Out</button>
+                <div style={{ display: "flex" }}>
+                  <p>Welcome, {auth.user.email} </p>
+                  <button
+                    style={{
+                      height: "25px",
+                      border: "none",
+                      marginLeft: "20px",
+                      fontSize: "small",
+                      backgroundColor: "red",
+                      color: "white",
+                    }}
+                    onClick={signOut}
+                  >
+                    Sign Out
+                  </button>
+                </div>
+                <Cart></Cart>
               </div>
             ) : (
               <button
@@ -238,13 +255,14 @@ const Login = () => {
       )}
       {user.error && <p style={{ color: "red" }}>{user.error} </p>}
 
-      {user.isMember === false && (
+      {user.isMember && (
         <form onSubmit={createAccount}>
           <h1>Sign Up</h1>
           <input
             type="text"
             onBlur={inputChange}
             name="displayName"
+            id="name"
             placeholder="Enter Name"
             required
           />
@@ -308,44 +326,46 @@ const Login = () => {
         </form>
       )}
 
-      {user.isMember && user.isSignIn === false && (
-        <form onSubmit={signInUser}>
-          <h1>Sign In</h1>
-          <input
-            type="text"
-            onBlur={inputChangeSignIn}
-            name="email"
-            // id="email"
-            placeholder="Enter Email"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            onBlur={inputChangeSignIn}
-            placeholder="Enter Password"
-            required
-          />
-          <br />
-          <input
-            type="submit"
-            value="Sign In"
-            style={{ backgroundColor: "tomato" }}
-          />
-          <br />
-          <input
-            type="submit"
-            value="Not a User,Sign Up Here!"
-            onClick={switchFormForSignUp}
-            style={{
-              border: "none",
-              color: "blue",
-              fontWeight: "600",
-              borderRadius: "5px",
-            }}
-          />
-        </form>
-      )}
+      {user.isMember === false &&
+        user.isSignIn === false &&
+        user.isSignInWithGoogle === false && (
+          <form onSubmit={signInUser}>
+            <h1>Sign In</h1>
+            <input
+              type="text"
+              onBlur={inputChangeSignIn}
+              name="email"
+              // id="email"
+              placeholder="Enter Email"
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              onBlur={inputChangeSignIn}
+              placeholder="Enter Password"
+              required
+            />
+            <br />
+            <input
+              type="submit"
+              value="Sign In"
+              style={{ backgroundColor: "tomato" }}
+            />
+            <br />
+            <input
+              type="submit"
+              value="Not a User,Sign Up Here!"
+              onClick={switchFormForSignUp}
+              style={{
+                border: "none",
+                color: "blue",
+                fontWeight: "600",
+                borderRadius: "5px",
+              }}
+            />
+          </form>
+        )}
     </div>
   );
 };

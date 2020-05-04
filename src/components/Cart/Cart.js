@@ -66,46 +66,30 @@ const Cart = () => {
       <div style={{ display: "flex" }}>
         <div className="order-delivery">
           <h2>Edit Delivery Details</h2>
-          <div style={{ width: "50%" }}>
-            <form action="submit">
+          <div>
+            <form onSubmit="none">
+              <input type="text" placeholder="Delivery Type" required></input>
+              <input type="text" placeholder="Address1" required></input>
+              <input type="text" placeholder="Address2"></input>
+              <input type="text" placeholder="Name" required></input>
               <input
-                type="delivery type"
-                placeholder="Delivery Type"
-                className="form-control"
-              ></input>
-              <input
-                type="delivery type"
-                placeholder="Address1"
-                className="form-control"
-              ></input>
-              <input
-                type="delivery type"
-                placeholder="Address2"
-                className="form-control"
-              ></input>
-              <input
-                type="delivery type"
-                placeholder="Name"
-                className="form-control"
-              ></input>
-              <input
-                type="delivery type"
+                type="text"
                 placeholder="Delivery Instructor"
-                className="form-control"
+                id="delivery-instructor"
+                required
               ></input>
-            </form>
-            <div className="checkout d-flex justify-content-center my-3">
+              <br />
               <Link to="/cart">
-                <button
-                  style={{
-                    backgroundColor: "Tomato",
-                  }}
+                <input
+                  type="submit"
+                  value="Save and Continue"
                   onClick={userInfo}
-                >
-                  Save and Continue
-                </button>
+                  style={{
+                    backgroundColor: "tomato",
+                  }}
+                />
               </Link>
-            </div>
+            </form>
           </div>
         </div>
         <div
