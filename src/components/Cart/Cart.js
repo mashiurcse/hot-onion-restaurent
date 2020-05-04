@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   getDatabaseCart,
   addToDatabaseCart,
+  processOrder,
 } from "../../utilities/databaseManager";
 import foodData from "../../foodData";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,6 +11,10 @@ import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
+  const [order, setOrder] = useState({
+    isUserInfo: false,
+  });
+  const [orderPlaced, setOrderPlaced] = useState(false);
   //const [count, setCount] = useState([]);
   // const { items, price } = cart;
   useEffect(() => {
@@ -43,6 +48,19 @@ const Cart = () => {
   function refreshPage() {
     window.location.reload(false);
   }
+
+  const userInfo = (e) => {
+    const userInformation = { ...order };
+    userInformation.isUserInfo = true;
+    setOrder(userInformation);
+  };
+
+  const handleOrderPlace = () => {
+    setCart([]);
+    setOrderPlaced(true);
+    processOrder();
+  };
+
   return (
     <div className="container">
       <div style={{ display: "flex" }}>
@@ -82,6 +100,7 @@ const Cart = () => {
                   style={{
                     backgroundColor: "Tomato",
                   }}
+                  onClick={userInfo}
                 >
                   Save and Continue
                 </button>
@@ -174,9 +193,18 @@ const Cart = () => {
           <h6>Delivery Fee: ${delivery} </h6>
           <h5>Total Price: ${total}</h5>
           <div className="checkout d-flex justify-content-center my-3">
-            <Link to="/orderPlaced">
+            {order.isUserInfo ? (
+              <Link to="/orderPlaced">
+                <button
+                  onClick={handleOrderPlace}
+                  style={{ backgroundColor: "tomato" }}
+                >
+                  Place Order
+                </button>
+              </Link>
+            ) : (
               <button>Place Order</button>
-            </Link>
+            )}
           </div>
         </div>
       </div>

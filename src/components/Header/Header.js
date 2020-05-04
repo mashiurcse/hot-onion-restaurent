@@ -22,7 +22,7 @@ const Header = () => {
   return (
     <div className="container">
       <nav className="navbar navbar-expand-md">
-        <div className="navbar-brand">
+        <div style={{ textAlign: "left" }} className="navbar-brand">
           <a href="/">
             <img src={logo} alt="logo" className="logo" />
           </a>

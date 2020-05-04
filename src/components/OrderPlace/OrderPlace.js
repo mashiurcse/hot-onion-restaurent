@@ -6,6 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./OrderPlace.css";
 
 const OrderPlace = () => {
+  function refreshPage() {
+    window.location.reload(false);
+  }
   return (
     <div className="container">
       <div style={{ display: "flex" }}>
@@ -70,6 +73,7 @@ const OrderPlace = () => {
             </div>
             <div className=" d-flex justify-content-center my-3">
               <button
+                onClick={refreshPage}
                 style={{
                   width: "200px",
                   backgroundColor: "tomato",
