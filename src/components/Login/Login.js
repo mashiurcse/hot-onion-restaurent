@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Auth from "./UseAuth";
@@ -6,6 +6,7 @@ import Auth from "./UseAuth";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import Cart from "../Cart/Cart";
+import { Link } from "react-router-dom";
 //import firebaseConfig from "../../firebase.config";
 
 //firebase.initializeApp(firebaseConfig);
@@ -54,9 +55,9 @@ const Login = () => {
 
     if (e.target.name === "password") {
       isValidPassword = e.target.value.length >= 8 && hasNumber(e.target.value);
-      if (isValidPassword === false) {
-        alert("Invalid Password!");
-      }
+      // if (isValidPassword === false) {
+      //   alert("Invalid Password!");
+      //}
     }
 
     newUserInfo[e.target.name] = e.target.value;
@@ -111,7 +112,24 @@ const Login = () => {
           createdUser.error = "";
           setUser(createdUser);
         })
-
+        .then(() => {
+          const usr = firebase.auth().currentUser;
+          // console.log(usr);
+          // console.log(user.displayName);
+          usr
+            .updateProfile({
+              displayName: user.displayName,
+              // photoURL: "https://example.com/jane-q-user/profile.jpg",
+            })
+            .then(function () {
+              // console.log(usr.displayName);
+              setUser(usr);
+              // Update successful.
+            })
+            .catch(function (error) {
+              // An error happened.
+            });
+        })
         .catch((error) => {
           const createdUser = { ...user };
           createdUser.isSignedIn = false;
@@ -124,10 +142,29 @@ const Login = () => {
     e.target.reset();
   };
 
+  const getUser = (user) => {
+    const { displayName, email } = user;
+    return { displayName, email };
+  };
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (usr) {
+      if (usr) {
+        const currUser = getUser(usr);
+        console.log(currUser);
+        setUser(currUser);
+        // User is signed in.
+      } else {
+        // No user is signed in.
+      }
+    });
+  }, []);
+
   const signInUser = (e) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(user.email, user.password)
+
       .then((res) => {
         console.log(res);
         const signInUserInfo = { ...user };
@@ -135,6 +172,7 @@ const Login = () => {
         signInUserInfo.error = "";
         setUser(signInUserInfo);
       })
+
       .catch((error) => {
         const signInUserInfo = { ...user };
         signInUserInfo.isSignIn = false;
@@ -149,14 +187,14 @@ const Login = () => {
     const isExistingUser = { ...user };
     isExistingUser.isMember = false;
     setUser(isExistingUser);
-    console.log(isExistingUser);
+    //console.log(isExistingUser);
   };
 
   const switchFormForSignUp = (e) => {
     const isExistingUser = { ...user };
     isExistingUser.isMember = true;
     setUser(isExistingUser);
-    console.log(isExistingUser);
+    //console.log(isExistingUser);
   };
 
   const signOut = () => {
@@ -246,12 +284,15 @@ const Login = () => {
             </button>
           </div>
           <Cart></Cart>
+          <Link to="/cart">
+            <button
+              style={{ backgroundColor: "tomato", borderRadius: "5px" }}
+              type="submit"
+            >
+              Go to Cart
+            </button>
+          </Link>
         </div>
-        // <div>
-        //   <p>Welcome, {user.displayName} </p>
-        //   <p>Email: {user.email} </p>
-        //   <button onClick={signOut}>Sign Out</button>
-        // </div>
       )}
       {user.error && <p style={{ color: "red" }}>{user.error} </p>}
 

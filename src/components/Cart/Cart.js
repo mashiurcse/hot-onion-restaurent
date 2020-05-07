@@ -15,15 +15,11 @@ const Cart = () => {
     isUserInfo: false,
   });
   const [orderPlaced, setOrderPlaced] = useState(false);
-  //const [count, setCount] = useState([]);
-  // const { items, price } = cart;
+
   useEffect(() => {
     const savedCart = getDatabaseCart(); //get ocject
     const productKeys = Object.keys(savedCart);
 
-    //const productQnt = Object.values(savedCart);
-    //setCount(productQnt);
-    // console.log(productKeys, productQnt);
     const cartProducts = productKeys.map((existingKey) => {
       //keys gula dhore product gula ber kore nia asbo, map return a array
       const product = foodData.find((pd) => pd.id === existingKey);
@@ -42,9 +38,7 @@ const Cart = () => {
   const tax = Math.round(subTotal * 0.12, 2);
   const delivery = 2;
   const total = subTotal + tax + delivery;
-  //const items = cart.map((pd) => pd.name);
-  //const price = cart.map((pd) => pd.price);
-  //   console.log(price);
+
   function refreshPage() {
     window.location.reload(false);
   }
