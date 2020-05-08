@@ -1,9 +1,21 @@
+import React, { useContext, useEffect } from "react";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from "../../firebase.config";
-import { useState } from "react";
+import { useState, createContext } from "react";
 
 firebase.initializeApp(firebaseConfig);
+//create context
+const AuthContext = createContext();
+//context Provider use in  Apps for all children
+export const AuthContextProvider = (props) => {
+  const auth = Auth();
+  return (
+    <AuthContext.Provider value={auth}>{props.children}</AuthContext.Provider>
+  );
+};
+//use Context
+export const useAuth = () => useContext(AuthContext);
 
 const Auth = () => {
   const [user, setUser] = useState(null);
@@ -45,6 +57,24 @@ const Auth = () => {
         // An error happened.
       });
   };
+
+  const getUser = (user) => {
+    const { displayName, email } = user;
+    return { name: displayName, email };
+  };
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (usr) {
+      if (usr) {
+        const currUser = getUser(usr);
+        // console.log(currUser.name);
+        setUser(currUser);
+        // User is signed in.
+      } else {
+        console.log("No User is SignedIn");
+      }
+    });
+  }, []);
 
   return {
     user,

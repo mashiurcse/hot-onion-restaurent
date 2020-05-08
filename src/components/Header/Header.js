@@ -7,6 +7,7 @@ import logo from "../../images/logo2.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getDatabaseCart } from "../../utilities/databaseManager";
 import { useState } from "react";
+import { useAuth } from "../Login/UseAuth";
 
 const Header = () => {
   const [cart, setCart] = useState([]);
@@ -18,6 +19,9 @@ const Header = () => {
 
     setCart(product);
   }, []);
+
+  const auth = useAuth();
+  // console.log(auth.user);
 
   return (
     <div className="container">
@@ -42,12 +46,36 @@ const Header = () => {
                 </a>
               </span>
             </li>
-            <li className="nav-item">
-              <a href="/login">Login</a>
-            </li>
-            <a href="/login">
-              <button className="top-btn">Sign Up</button>
-            </a>
+            {auth.user ? (
+              <div className="nav-link d-flex align-self-center">
+                <span style={{ color: "red" }}>{auth.user.name} </span>
+                <a href="/login">
+                  <button
+                    style={{
+                      height: "25px",
+                      border: "none",
+                      marginLeft: "20px",
+                      fontSize: "small",
+                      backgroundColor: "red",
+                      color: "white",
+                    }}
+                  >
+                    SignOut
+                  </button>
+                </a>
+              </div>
+            ) : (
+              <div className="nav-link d-flex align-self-center">
+                <li className="nav-item">
+                  <a href="/login">Login</a>
+                </li>
+                <li>
+                  <a href="/login">
+                    <button className="top-btn">SignUp</button>
+                  </a>
+                </li>
+              </div>
+            )}
           </ul>
         </div>
       </nav>

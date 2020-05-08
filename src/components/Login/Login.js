@@ -7,6 +7,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import Cart from "../Cart/Cart";
 import { Link } from "react-router-dom";
+import { useAuth } from "./UseAuth";
 //import firebaseConfig from "../../firebase.config";
 
 //firebase.initializeApp(firebaseConfig);
@@ -29,7 +30,8 @@ const Login = () => {
   });
 
   //Login with Google
-  const auth = Auth();
+  //const auth = Auth();
+  const auth = useAuth();
   // console.log(auth);
 
   //console.log(user);
@@ -142,24 +144,6 @@ const Login = () => {
     e.target.reset();
   };
 
-  const getUser = (user) => {
-    const { displayName, email } = user;
-    return { displayName, email };
-  };
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (usr) {
-      if (usr) {
-        const currUser = getUser(usr);
-        console.log(currUser);
-        setUser(currUser);
-        // User is signed in.
-      } else {
-        // No user is signed in.
-      }
-    });
-  }, []);
-
   const signInUser = (e) => {
     firebase
       .auth()
@@ -215,6 +199,7 @@ const Login = () => {
       .catch(function (error) {
         // An error happened.
       });
+    window.location.pathname = "/";
   };
 
   return (
@@ -225,7 +210,7 @@ const Login = () => {
             {auth.user ? (
               <div>
                 <div style={{ display: "flex" }}>
-                  <p>Welcome, {auth.user.email} </p>
+                  <p>Welcome, {auth.user.name} </p>
                   <button
                     style={{
                       height: "25px",

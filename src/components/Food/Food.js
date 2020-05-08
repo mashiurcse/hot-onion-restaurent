@@ -18,7 +18,7 @@ const Food = () => {
 
     setCart(product);
   }, []);
-  console.log(cart.length);
+  //console.log(cart.length);
   const foods = foodData;
   const [food, setFood] = useState([]);
   const [category, setCategory] = useState("lunch");

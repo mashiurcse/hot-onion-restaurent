@@ -5,8 +5,10 @@ import rider from "../../images/Group 1152.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./OrderPlace.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../Login/UseAuth";
 
 const OrderPlace = () => {
+  const auth = useAuth();
   return (
     <div className="container">
       <div style={{ display: "flex" }}>
@@ -62,9 +64,12 @@ const OrderPlace = () => {
                   borderLeft: "50px",
                 }}
               >
-                <div>
-                  <strong>Hamim</strong>
-                </div>
+                {auth.user && (
+                  <div>
+                    <strong>{auth.user.name}</strong>
+                  </div>
+                ) }
+
                 <div>Your Rider</div>
               </div>
             </div>
