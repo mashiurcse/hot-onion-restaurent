@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Auth from "./UseAuth";
 //firebase
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import Cart from "../Cart/Cart";
-import { Link } from "react-router-dom";
 import { useAuth } from "./UseAuth";
-//import firebaseConfig from "../../firebase.config";
-
-//firebase.initializeApp(firebaseConfig);
-//firebase
 
 const Login = () => {
   //Login with user and password
@@ -19,6 +12,7 @@ const Login = () => {
     isSignedIn: false,
     isMember: false,
     isSignIn: false,
+    isLogedIn: false,
     displayName: "",
     email: "",
     password: "",
@@ -29,12 +23,9 @@ const Login = () => {
     isSignInWithGoogle: false,
   });
 
-  //Login with Google
-  //const auth = Auth();
   const auth = useAuth();
   // console.log(auth);
 
-  //console.log(user);
   const ValidateEmail = (email) =>
     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
 
@@ -66,27 +57,15 @@ const Login = () => {
     newUserInfo.isValid = isValid;
     newUserInfo.isValidPassword = isValidPassword;
     setUser(newUserInfo);
-    //console.log(newUserInfo);
   };
 
   const inputChangeSignIn = (e) => {
-    let isValid = true;
-    let isValidPassword = true;
-    const newUserInfo = { ...user };
-    //perform validation
+    const signedInUserInfo = { ...user };
 
-    if (e.target.name === "email") {
-      isValid = ValidateEmail(e.target.value);
-    }
-
-    if (e.target.name === "password") {
-      isValidPassword = e.target.value.length >= 8 && hasNumber(e.target.value);
-    }
-
-    newUserInfo[e.target.name] = e.target.value;
-    newUserInfo.isValid = isValid;
-    newUserInfo.isValidPassword = isValidPassword;
-    setUser(newUserInfo);
+    signedInUserInfo[e.target.name] = e.target.value;
+    signedInUserInfo.isValid = true;
+    signedInUserInfo.isValidPassword = true;
+    setUser(signedInUserInfo);
   };
 
   const createAccount = (e) => {
@@ -107,7 +86,7 @@ const Login = () => {
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password)
         .then((res) => {
-          console.log(res);
+          //  console.log(res);
           const createdUser = { ...user };
           createdUser.isSignedIn = true;
           createdUser.isMember = false;
@@ -123,8 +102,15 @@ const Login = () => {
               displayName: user.displayName,
               // photoURL: "https://example.com/jane-q-user/profile.jpg",
             })
-            .then(function () {
+            .then(() => {
+              window.location.pathname = "/cart";
+            })
+            .then(function (res) {
               // console.log(usr.displayName);
+              const createdUser = { ...user };
+              createdUser.isSignedIn = true;
+              createdUser.isMember = false;
+              createdUser.error = "";
               setUser(usr);
               // Update successful.
             })
@@ -153,10 +139,13 @@ const Login = () => {
         console.log(res);
         const signInUserInfo = { ...user };
         signInUserInfo.isSignIn = true;
+        signInUserInfo.isLogedIn = true;
         signInUserInfo.error = "";
         setUser(signInUserInfo);
       })
-
+      .then(() => {
+        window.location.pathname = "/cart";
+      })
       .catch((error) => {
         const signInUserInfo = { ...user };
         signInUserInfo.isSignIn = false;
@@ -164,7 +153,7 @@ const Login = () => {
         setUser(signInUserInfo);
       });
     e.preventDefault();
-    //e.target.reset();
+    e.target.reset();
   };
 
   const switchForm = (e) => {
@@ -189,172 +178,111 @@ const Login = () => {
         console.log("Successfully Sign Out!");
         const signInUserInfo = { ...user };
         signInUserInfo.isSignIn = false;
+        signInUserInfo.isLogedIn = false;
         signInUserInfo.displayName = "";
         signInUserInfo.email = "";
         signInUserInfo.password = "";
         signInUserInfo.error = "";
         setUser(signInUserInfo);
-        console.log(signInUserInfo);
       })
       .catch(function (error) {
-        // An error happened.
+        console.log(error);
       });
     window.location.pathname = "/";
   };
 
   return (
     <div className="container">
-      {user.isMember === false && user.isSignIn === false && (
-        <div>
-          <div>
-            {auth.user ? (
-              <div>
-                <div style={{ display: "flex" }}>
-                  <p>Welcome, {auth.user.name} </p>
-                  <button
-                    style={{
-                      height: "25px",
-                      border: "none",
-                      marginLeft: "20px",
-                      fontSize: "small",
-                      backgroundColor: "red",
-                      color: "white",
-                    }}
-                    onClick={signOut}
-                  >
-                    Sign Out
-                  </button>
-                </div>
-                <Cart></Cart>
-              </div>
-            ) : (
-              <button
+      <button
+        style={{
+          backgroundColor: "tomato",
+          borderRadius: "5px",
+        }}
+        onClick={auth.signInWithGoogle}
+      >
+        Sign in With Google
+      </button>
+      <br />
+      <div>
+        <strong
+          style={{
+            color: "tomato",
+            fontWeight: "700",
+          }}
+        >
+          OR
+        </strong>
+        {user.isMember && (
+          <form onSubmit={createAccount}>
+            <h1>Sign Up</h1>
+            <input
+              type="text"
+              onBlur={inputChange}
+              name="displayName"
+              id="name"
+              placeholder="Enter Name"
+              required
+            />
+            <input
+              type="text"
+              onBlur={inputChange}
+              name="email"
+              id="email"
+              placeholder="Enter Email"
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              onBlur={inputChange}
+              placeholder="Enter Password"
+              required
+            />
+            <input
+              type="password"
+              name="retypePassword"
+              onBlur={inputChange}
+              placeholder="Repeat Password"
+              required
+            />
+
+            <div className="checkout">
+              <input
+                type="submit"
+                value="Cancel"
                 style={{
-                  backgroundColor: "tomato",
+                  backgroundColor: "gray",
+                  border: "10px",
                   borderRadius: "5px",
                 }}
-                onClick={auth.signInWithGoogle}
-              >
-                Sign in With Google
-              </button>
-            )}{" "}
-          </div>
-          <br />
-          <strong
-            style={{
-              color: "tomato",
-              fontWeight: "700",
-            }}
-          >
-            OR
-          </strong>
-        </div>
-      )}
-      {user.isSignIn && (
-        <div>
-          <div style={{ display: "flex" }}>
-            <p>Welcome, {user.email} </p>
-            <button
+              />
+
+              <input
+                type="submit"
+                value="Sign Up"
+                style={{
+                  backgroundColor: "tomato",
+                  marginLeft: "20px",
+                  border: "10px",
+                  borderRadius: "5px",
+                }}
+              />
+            </div>
+
+            <input
+              type="submit"
+              value="Already an Existing User"
+              onClick={switchForm}
               style={{
-                height: "25px",
                 border: "none",
+                color: "blue",
                 marginLeft: "20px",
-                fontSize: "small",
-                backgroundColor: "red",
-                color: "white",
-              }}
-              onClick={signOut}
-            >
-              Sign Out
-            </button>
-          </div>
-          <Cart></Cart>
-          <Link to="/cart">
-            <button
-              style={{ backgroundColor: "tomato", borderRadius: "5px" }}
-              type="submit"
-            >
-              Go to Cart
-            </button>
-          </Link>
-        </div>
-      )}
-      {user.error && <p style={{ color: "red" }}>{user.error} </p>}
-
-      {user.isMember && (
-        <form onSubmit={createAccount}>
-          <h1>Sign Up</h1>
-          <input
-            type="text"
-            onBlur={inputChange}
-            name="displayName"
-            id="name"
-            placeholder="Enter Name"
-            required
-          />
-          <input
-            type="text"
-            onBlur={inputChange}
-            name="email"
-            id="email"
-            placeholder="Enter Email"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            onBlur={inputChange}
-            placeholder="Enter Password"
-            required
-          />
-          <input
-            type="password"
-            name="retypePassword"
-            onBlur={inputChange}
-            placeholder="Repeat Password"
-            required
-          />
-
-          <div className="checkout">
-            <input
-              type="submit"
-              value="Cancel"
-              style={{
-                backgroundColor: "gray",
-                border: "10px",
-                borderRadius: "5px",
+                fontWeight: "600",
               }}
             />
-
-            <input
-              type="submit"
-              value="Sign Up"
-              style={{
-                backgroundColor: "tomato",
-                marginLeft: "20px",
-                border: "10px",
-                borderRadius: "5px",
-              }}
-            />
-          </div>
-
-          <input
-            type="submit"
-            value="Already an Existing User"
-            onClick={switchForm}
-            style={{
-              border: "none",
-              color: "blue",
-              marginLeft: "20px",
-              fontWeight: "600",
-            }}
-          />
-        </form>
-      )}
-
-      {user.isMember === false &&
-        user.isSignIn === false &&
-        user.isSignInWithGoogle === false && (
+          </form>
+        )}
+        {user.isMember === false && user.isSignInWithGoogle === false && (
           <form onSubmit={signInUser}>
             <h1>Sign In</h1>
             <input
@@ -392,6 +320,9 @@ const Login = () => {
             />
           </form>
         )}
+      </div>
+
+      {user.error && <p style={{ color: "red" }}>{user.error} </p>}
     </div>
   );
 };

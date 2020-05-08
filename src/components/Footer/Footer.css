@@ -1,0 +1,8 @@
+.footer {
+  background-color: rgb(37, 36, 36);
+}
+
+.footer li {
+  list-style: none;
+  color: white;
+}

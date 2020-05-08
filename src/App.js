@@ -9,6 +9,8 @@ import ItemDetails from "./components/ItemDetails/ItemDetails";
 import OrderPlace from "./components/OrderPlace/OrderPlace";
 import Login from "./components/Login/Login";
 import { AuthContextProvider } from "./components/Login/UseAuth";
+import Footer from "./components/Footer/Footer";
+import OurService from "./components/OurServices/OurServices";
 
 function App() {
   return (
@@ -36,7 +38,9 @@ function App() {
             </Route>
           </Switch>
         </Router>
+        <OurService></OurService>
       </AuthContextProvider>
+      <Footer></Footer>
     </div>
   );
 }

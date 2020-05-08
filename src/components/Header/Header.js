@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getDatabaseCart } from "../../utilities/databaseManager";
 import { useState } from "react";
 import { useAuth } from "../Login/UseAuth";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [cart, setCart] = useState([]);
@@ -35,7 +36,7 @@ const Header = () => {
           <ul className="navbar-nav">
             <li className="nav-item ml-3">
               <span>
-                <a href="/login">
+                <a href={auth.user ? "/cart" : "/login"}>
                   <FontAwesomeIcon
                     className="cart-icon"
                     icon={faShoppingCart}
@@ -48,21 +49,25 @@ const Header = () => {
             </li>
             {auth.user ? (
               <div className="nav-link d-flex align-self-center">
-                <span style={{ color: "red" }}>{auth.user.name} </span>
-                <a href="/login">
-                  <button
-                    style={{
-                      height: "25px",
-                      border: "none",
-                      marginLeft: "20px",
-                      fontSize: "small",
-                      backgroundColor: "red",
-                      color: "white",
-                    }}
-                  >
-                    SignOut
-                  </button>
-                </a>
+                <span
+                  style={{ color: "red", fontSize: "small", fontWeight: "700" }}
+                >
+                  {auth.user.name}{" "}
+                </span>
+
+                <button
+                  style={{
+                    height: "25px",
+                    border: "none",
+                    marginLeft: "20px",
+                    fontSize: "small",
+                    backgroundColor: "red",
+                    color: "white",
+                  }}
+                  onClick={auth.signOut}
+                >
+                  SignOut
+                </button>
               </div>
             ) : (
               <div className="nav-link d-flex align-self-center">

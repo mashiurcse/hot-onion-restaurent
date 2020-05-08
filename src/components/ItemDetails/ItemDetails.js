@@ -40,6 +40,11 @@ const ItemDetails = () => {
   }
   return (
     <div className="container">
+      <a href="/">
+        <span style={{ fontSize: "large", fontWeight: "700", color: "tomato" }}>
+          Home
+        </span>
+      </a>
       <div className="row mt-4">
         <div className="col-lg-6 col-md-12">
           <h1>{name}</h1>

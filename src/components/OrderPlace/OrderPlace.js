@@ -4,18 +4,22 @@ import delivery from "../../images/Group 1151.png";
 import rider from "../../images/Group 1152.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./OrderPlace.css";
-import { Link } from "react-router-dom";
 import { useAuth } from "../Login/UseAuth";
 
 const OrderPlace = () => {
   const auth = useAuth();
+
+  const shopingDone = () => {
+    window.history.go(0);
+    window.location.pathname = "/";
+  };
+
   return (
     <div className="container">
       <div style={{ display: "flex" }}>
         <div className=" d-flex justify-content-center my-3">
           <img src={img} alt="" width="600px" />
         </div>
-
         <div style={{ marginLeft: "100px" }}>
           <div className="order-place">
             <div>
@@ -68,22 +72,21 @@ const OrderPlace = () => {
                   <div>
                     <strong>{auth.user.name}</strong>
                   </div>
-                ) }
+                )}
 
                 <div>Your Rider</div>
               </div>
             </div>
             <div className=" d-flex justify-content-center my-3">
-              <Link to="/">
-                <button
-                  style={{
-                    width: "200px",
-                    backgroundColor: "tomato",
-                  }}
-                >
-                  Contact
-                </button>
-              </Link>
+              <button
+                onClick={shopingDone}
+                style={{
+                  width: "200px",
+                  backgroundColor: "tomato",
+                }}
+              >
+                Contact
+              </button>
             </div>
           </div>
         </div>

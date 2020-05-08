@@ -14,7 +14,6 @@ const Cart = () => {
   const [order, setOrder] = useState({
     isUserInfo: false,
   });
-  const [orderPlaced, setOrderPlaced] = useState(false);
 
   useEffect(() => {
     const savedCart = getDatabaseCart(); //get ocject
@@ -43,15 +42,18 @@ const Cart = () => {
     window.location.reload(false);
   }
 
-  const userInfo = (e) => {
+  const userInfo = () => {
     const userInformation = { ...order };
     userInformation.isUserInfo = true;
     setOrder(userInformation);
   };
 
+  const deliveryInfo = (e) => {
+    console.log(e);
+  };
+
   const handleOrderPlace = () => {
     setCart([]);
-    setOrderPlaced(true);
     processOrder();
   };
 
@@ -61,7 +63,7 @@ const Cart = () => {
         <div className="order-delivery">
           <h2>Edit Delivery Details</h2>
           <div>
-            <form onSubmit="none">
+            <form onSubmit={deliveryInfo}>
               <input type="text" placeholder="Delivery Type" required></input>
               <input type="text" placeholder="Address1" required></input>
               <input type="text" placeholder="Address2"></input>
@@ -69,20 +71,17 @@ const Cart = () => {
               <input
                 type="text"
                 placeholder="Delivery Instructor"
-                id="delivery-instructor"
                 required
               ></input>
               <br />
-              <Link to="/cart">
-                <input
-                  type="submit"
-                  value="Save and Continue"
-                  onClick={userInfo}
-                  style={{
-                    backgroundColor: "tomato",
-                  }}
-                />
-              </Link>
+              <input
+                type="submit"
+                onClick={userInfo}
+                value="Save and Continue"
+                style={{
+                  backgroundColor: "tomato",
+                }}
+              />
             </form>
           </div>
         </div>

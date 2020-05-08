@@ -30,6 +30,7 @@ const Auth = () => {
         const { displayName, email, photoURL } = res.user;
         const signedInUser = {
           isSignInWithGoogle: true,
+          isLogedIn: true,
           isSignedIn: true,
           name: displayName,
           email,
@@ -38,6 +39,9 @@ const Auth = () => {
         console.log(signedInUser.name);
         setUser(signedInUser);
         return res.user;
+      })
+      .then(() => {
+        window.location.pathname = "/cart";
       })
       .catch((err) => {
         console.log(err);
@@ -52,6 +56,7 @@ const Auth = () => {
       .then(function () {
         setUser(null);
         // Sign-out successful.
+        window.location.pathname = "/";
       })
       .catch(function (error) {
         // An error happened.
