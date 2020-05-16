@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
-import foodData from "../../foodData";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
@@ -13,27 +12,39 @@ import { addToDatabaseCart } from "../../utilities/databaseManager";
 //ctrl+k+c/u - multiline comment, alt+arrow - for line move
 const ItemDetails = () => {
   const { id } = useParams();
-  const foods = foodData;
-  const [category, setCategory] = useState([]);
+  const [foodInd, setFoodInd] = useState([]);
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await fetch("http://localhost:4200/product/" + id);
+        const json = await response.json();
+        setFoodInd(json);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, []);
+
+  //const [category, setCategory] = useState([]);
   const [count, setCount] = useState(1);
-  const food = foods.find((product) => id === product.id);
+  // const food = foods.find((product) => id === product.id);
   //const [cart, setCart] = useState([]);
 
-  useEffect(() => {
-    const foodCategory = food.category;
-    const currentFoods = foods.filter((food) => foodCategory === food.category);
-    setCategory(currentFoods);
-  }, [food.category, foods]);
+  // useEffect(() => {
+  //   const foodCategory = food.category;
+  //   const currentFoods = foods.filter((food) => foodCategory === food.category);
+  //   setCategory(currentFoods);
+  // }, [food.category, foods, foodInd]);
 
-  const { name, detailsDescription, img, price } = food;
+  const { name, detailsDescription, img, price } = foodInd;
 
   const handleAddProduct = (product) => {
     const toBeAdded = product.id;
-    const productAdded = foods.find((pd) => pd.id === toBeAdded);
+    //console.log(toBeAdded);
+    //const productAdded = foodInd.find((pd) => pd.id === toBeAdded);
     const count = document.getElementById("item-quantity").innerHTML;
-
     //setCart(sameProduct);
-    addToDatabaseCart(productAdded.id, count);
+    addToDatabaseCart(toBeAdded, count);
   };
   function refreshPage() {
     window.location.reload(false);
@@ -80,7 +91,7 @@ const ItemDetails = () => {
             </div>
           </div>
           <button
-            onClick={() => handleAddProduct(food)}
+            onClick={() => handleAddProduct(foodInd)}
             onClickCapture={refreshPage}
             className="addButton"
           >
@@ -92,13 +103,13 @@ const ItemDetails = () => {
           <img src={img} alt={name} width="75%" />
         </div>
       </div>
-      <div className="row mt-4 moreItem">
+      {/* <div className="row mt-4 moreItem">
         {category.map((food) => (
           <Link to={"/product/" + food.id} key={food.id}>
             <img src={food.img} alt={food.name} width="10%" className="ml-2" />
           </Link>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -4,7 +4,6 @@ import {
   addToDatabaseCart,
   processOrder,
 } from "../../utilities/databaseManager";
-import foodData from "../../foodData";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Cart.css";
 import { Link } from "react-router-dom";
@@ -15,20 +14,31 @@ const Cart = () => {
     isUserInfo: false,
   });
 
+  const [foods, setFoods] = useState([]);
+
   useEffect(() => {
-    const savedCart = getDatabaseCart(); //get ocject
-    const productKeys = Object.keys(savedCart);
-
-    const cartProducts = productKeys.map((existingKey) => {
-      //keys gula dhore product gula ber kore nia asbo, map return a array
-      const product = foodData.find((pd) => pd.id === existingKey);
-      product.quantity = savedCart[existingKey];
-      return product;
-    });
-
-    setCart(cartProducts);
-    console.log(cartProducts);
+    fetch("http://localhost:4200/product")
+      .then((res) => res.json())
+      .then((data) => {
+        setFoods(data);
+      });
   }, []);
+  console.log(foods);
+  useEffect(() => {
+    if (foods.length > 0) {
+      const savedCart = getDatabaseCart(); //get ocject
+      console.log(savedCart);
+      const productKeys = Object.keys(savedCart);
+      const cartProducts = productKeys.map((existingKey) => {
+        //keys gula dhore product gula ber kore nia asbo, map return a array
+        const product = foods.find((pd) => pd.id === existingKey);
+        product.quantity = savedCart[existingKey];
+        return product;
+      });
+
+      setCart(cartProducts);
+    }
+  }, [foods]);
 
   const subTotal = cart.reduce(
     (total, pd) => total + pd.price * pd.quantity,

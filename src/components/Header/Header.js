@@ -8,7 +8,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getDatabaseCart } from "../../utilities/databaseManager";
 import { useState } from "react";
 import { useAuth } from "../Login/UseAuth";
-import { Link } from "react-router-dom";
 
 const Header = () => {
   const [cart, setCart] = useState([]);
