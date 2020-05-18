@@ -35,7 +35,7 @@ const Header = () => {
           <ul className="navbar-nav">
             <li className="nav-item ml-3">
               <span>
-                <a href={auth.user ? "/cart" : "/login"}>
+                <a href="/cart">
                   <FontAwesomeIcon
                     className="cart-icon"
                     icon={faShoppingCart}

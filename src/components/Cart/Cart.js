@@ -7,6 +7,8 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Cart.css";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useAuth } from "../Login/UseAuth";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -14,31 +16,32 @@ const Cart = () => {
     isUserInfo: false,
   });
 
-  const [foods, setFoods] = useState([]);
+  const { register, errors, handleSubmit } = useForm();
+  const auth = useAuth();
 
   useEffect(() => {
-    fetch("http://localhost:4200/product")
+    const savedCart = getDatabaseCart(); //get ocject
+    const productKeys = Object.keys(savedCart);
+    console.log(savedCart);
+    fetch("http://localhost:4200/getProductsById", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productKeys),
+    })
       .then((res) => res.json())
       .then((data) => {
-        setFoods(data);
+        const cartProducts = productKeys.map((existingKey) => {
+          //keys gula dhore product gula ber kore nia asbo, map return a array
+          const product = data.find((pd) => pd.id === existingKey);
+          product.quantity = savedCart[existingKey];
+          return product;
+        });
+
+        setCart(cartProducts);
       });
   }, []);
-  console.log(foods);
-  useEffect(() => {
-    if (foods.length > 0) {
-      const savedCart = getDatabaseCart(); //get ocject
-      console.log(savedCart);
-      const productKeys = Object.keys(savedCart);
-      const cartProducts = productKeys.map((existingKey) => {
-        //keys gula dhore product gula ber kore nia asbo, map return a array
-        const product = foods.find((pd) => pd.id === existingKey);
-        product.quantity = savedCart[existingKey];
-        return product;
-      });
-
-      setCart(cartProducts);
-    }
-  }, [foods]);
 
   const subTotal = cart.reduce(
     (total, pd) => total + pd.price * pd.quantity,
@@ -58,13 +61,26 @@ const Cart = () => {
     setOrder(userInformation);
   };
 
-  const deliveryInfo = (e) => {
-    console.log(e);
-  };
-
-  const handleOrderPlace = () => {
-    setCart([]);
-    processOrder();
+  const onSubmit = (data) => {
+    const savedCart = getDatabaseCart();
+    console.log(auth.user.name);
+    const orderDetails = {
+      email: auth.user.email,
+      cart: savedCart,
+    };
+    fetch("http://localhost:4200/placeOrder", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderDetails),
+    })
+      .then((res) => res.json())
+      .then((order) => {
+        console.log(order);
+        alert("Successfully Order Places - " + order._id);
+        processOrder();
+      });
   };
 
   return (
@@ -73,7 +89,61 @@ const Cart = () => {
         <div className="order-delivery">
           <h2>Edit Delivery Details</h2>
           <div>
-            <form onSubmit={deliveryInfo}>
+            <form className="ship-form" onSubmit={handleSubmit(onSubmit)}>
+              <input
+                name="name"
+                //defaultValue={auth.user.name}
+                ref={register({ required: true })}
+                placeholder="Your Name"
+              />
+              {errors.name && <span className="error">Name is required</span>}
+
+              <input
+                name="email"
+                // defaultValue={auth.user.email}
+                ref={register({ required: true })}
+                placeholder="Your Email"
+              />
+              {errors.email && <span className="error">Email is required</span>}
+              <input
+                name="AddressLine1"
+                ref={register({ required: true })}
+                placeholder="Address Line 1"
+              />
+              {errors.AddressLine1 && (
+                <span className="error">Address is required</span>
+              )}
+              <input
+                name="AddressLine2"
+                ref={register}
+                placeholder="Address Line 1"
+              />
+              <input
+                name="city"
+                ref={register({ required: true })}
+                placeholder="City"
+              />
+              {errors.city && <span className="error">City is required</span>}
+              <input
+                name="country"
+                ref={register({ required: true })}
+                placeholder="Country"
+              />
+              {errors.country && (
+                <span className="error">Country is required</span>
+              )}
+              <input
+                name="zipcode"
+                ref={register({ required: true })}
+                placeholder="Zip Code"
+              />
+              {errors.zipcode && (
+                <span className="error">Zip Code is required</span>
+              )}
+
+              <input onClick={userInfo} type="submit" />
+            </form>
+            {/* <form onSubmit={deliveryInfo}>
               <input type="text" placeholder="Delivery Type" required></input>
               <input type="text" placeholder="Address1" required></input>
               <input type="text" placeholder="Address2"></input>
@@ -92,7 +162,7 @@ const Cart = () => {
                   backgroundColor: "tomato",
                 }}
               />
-            </form>
+            </form> */}
           </div>
         </div>
         <div
@@ -181,9 +251,9 @@ const Cart = () => {
           <h5>Total Price: ${total}</h5>
           <div className="checkout d-flex justify-content-center my-3">
             {order.isUserInfo ? (
-              <Link to="/orderPlaced">
+              <Link to="/shipment">
                 <button
-                  onClick={handleOrderPlace}
+                  // onClick={handleOrderPlace}
                   style={{ backgroundColor: "tomato" }}
                 >
                   Place Order

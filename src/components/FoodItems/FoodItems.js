@@ -12,7 +12,7 @@ const FoodItems = (props) => {
         <div className="card-body">
           <h5 className="card-title">{name}</h5>
           <p className="card-text">{description}</p>
-          <h4 className="card-title">{price}</h4>
+          <h4 className="card-title">${price}</h4>
         </div>
       </Link>
     </div>

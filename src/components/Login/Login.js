@@ -191,6 +191,12 @@ const Login = () => {
     window.location.pathname = "/";
   };
 
+  const handleSignInWithGoogle = () => {
+    auth.signInWithGoogle().then((res) => {
+      window.location.pathname = "/cart";
+    });
+  };
+
   return (
     <div className="container">
       <button
@@ -198,7 +204,7 @@ const Login = () => {
           backgroundColor: "tomato",
           borderRadius: "5px",
         }}
-        onClick={auth.signInWithGoogle}
+        onClick={handleSignInWithGoogle}
       >
         Sign in With Google
       </button>

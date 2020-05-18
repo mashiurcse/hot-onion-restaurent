@@ -8,9 +8,10 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ItemDetails from "./components/ItemDetails/ItemDetails";
 import OrderPlace from "./components/OrderPlace/OrderPlace";
 import Login from "./components/Login/Login";
-import { AuthContextProvider } from "./components/Login/UseAuth";
+import { AuthContextProvider, PrivateRoute } from "./components/Login/UseAuth";
 import Footer from "./components/Footer/Footer";
 import OurService from "./components/OurServices/OurServices";
+import Shipment from "./components/Shipment/Shipment";
 
 function App() {
   return (
@@ -24,9 +25,7 @@ function App() {
               <Banner></Banner>
               <Food />
             </Route>
-            <Route path="/cart">
-              <Cart />
-            </Route>
+
             <Route exact path="/login">
               <Login></Login>
             </Route>
@@ -36,6 +35,12 @@ function App() {
             <Route path="/product/:id">
               <ItemDetails></ItemDetails>
             </Route>
+            <Route path="/cart">
+              <Cart />
+            </Route>
+            <PrivateRoute path="/shipment">
+              <Shipment></Shipment>
+            </PrivateRoute>
           </Switch>
         </Router>
         <OurService></OurService>
