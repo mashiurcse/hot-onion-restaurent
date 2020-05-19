@@ -17,9 +17,8 @@ function App() {
   return (
     <div>
       <AuthContextProvider>
-        <Header />
-
         <Router>
+          <Header />
           <Switch>
             <Route exact path="/">
               <Banner></Banner>

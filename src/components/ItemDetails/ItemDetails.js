@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,7 +23,7 @@ const ItemDetails = () => {
         console.error(e);
       }
     })();
-  }, []);
+  }, [id]);
 
   //const [category, setCategory] = useState([]);
   const [count, setCount] = useState(1);

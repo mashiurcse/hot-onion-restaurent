@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getDatabaseCart } from "../../utilities/databaseManager";
 import { useState } from "react";
 import { useAuth } from "../Login/UseAuth";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [cart, setCart] = useState([]);
@@ -35,15 +36,24 @@ const Header = () => {
           <ul className="navbar-nav">
             <li className="nav-item ml-3">
               <span>
-                <a href="/cart">
-                  <FontAwesomeIcon
-                    className="cart-icon"
-                    icon={faShoppingCart}
-                  />
-                  <span className="cart-amount counter-number">
-                    {cart.length}
-                  </span>
-                </a>
+                {cart.length > 0 ? (
+                  <Link to="/cart">
+                    <FontAwesomeIcon
+                      className="cart-icon"
+                      icon={faShoppingCart}
+                    />
+                    <span className="cart-amount counter-number">
+                      {cart.length}
+                    </span>
+                  </Link>
+                ) : (
+                  <Link to="/">
+                    <FontAwesomeIcon
+                      className="cart-icon"
+                      icon={faShoppingCart}
+                    />
+                  </Link>
+                )}
               </span>
             </li>
             {auth.user ? (
