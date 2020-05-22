@@ -22,7 +22,7 @@ const Food = () => {
   const [category, setCategory] = useState("lunch");
 
   useEffect(() => {
-    fetch("http://localhost:4200/product")
+    fetch("https://morning-everglades-94803.herokuapp.com/product")
       .then((res) => res.json())
       .then((data) => {
         setFood(data);

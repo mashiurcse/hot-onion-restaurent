@@ -16,7 +16,7 @@ const ItemDetails = () => {
   useEffect(() => {
     (async function () {
       try {
-        const response = await fetch("http://localhost:4200/product/" + id);
+        const response = await fetch("https://morning-everglades-94803.herokuapp.com/product/" + id);
         const json = await response.json();
         setFoodInd(json);
       } catch (e) {

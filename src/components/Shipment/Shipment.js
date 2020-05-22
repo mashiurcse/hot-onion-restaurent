@@ -33,7 +33,7 @@ const Shipment = () => {
       shipment: shipmentInfo,
       payment: payment,
     };
-    fetch("http://localhost:4200/placeOrder", {
+    fetch("https://morning-everglades-94803.herokuapp.com/placeOrder", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

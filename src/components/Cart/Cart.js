@@ -14,7 +14,7 @@ const Cart = () => {
     const savedCart = getDatabaseCart(); //get ocject
     const productKeys = Object.keys(savedCart);
     console.log(savedCart);
-    fetch("http://localhost:4200/getProductsById", {
+    fetch("https://morning-everglades-94803.herokuapp.com/getProductsById", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

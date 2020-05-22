@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { Link } from "react-router-dom";
 
 const CheckoutForm = (props) => {
   const [paymentError, setPaymentError] = useState(null);
@@ -43,6 +44,13 @@ const CheckoutForm = (props) => {
       {paymentFinished && (
         <p style={{ color: "green" }}>Payment Successfull...</p>
       )}
+      <br />
+      <br />
+      <Link to="/">
+        <button style={{ backgroundColor: "tomato", borderRadius: "5px" }}>
+          ::: Shop More :::
+        </button>
+      </Link>
     </form>
   );
 };
